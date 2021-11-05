@@ -26,5 +26,30 @@ def lisaa_astiat():
         if con is not None:
             con.close()
 
+
+#Hakee astiat tietokannasta ja tulostaa haun tuloksen
+def tulosta_astiat():
+    con = None
+    try:
+        con = psycopg2.connect(**config())
+        cursor = con.cursor()
+        sarakkeet = "nimi, lkm"
+        taulu = "astia"
+        SQL = (f"SELECT {sarakkeet} FROM {taulu};")
+        cursor.execute(SQL)
+        result = cursor.fetchall()
+
+        for row in result:
+            print(f"{row}kpl")    
+        cursor.close()
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if con is not None:
+            con.close()
+
+
 if __name__ == "__main__":
-    lisaa_astiat()
+    #lisaa_astiat()
+    tulosta_astiat()
